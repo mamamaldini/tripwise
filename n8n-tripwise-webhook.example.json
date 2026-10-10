@@ -1,0 +1,33 @@
+{
+  "name": "TripWise recommendation event (example)",
+  "nodes": [
+    {
+      "parameters": {"httpMethod": "POST", "path": "tripwise-recommendations", "responseMode": "onReceived", "options": {}},
+      "id": "tripwise-webhook",
+      "name": "TripWise Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [260, 300],
+      "webhookId": "tripwise-recommendations-example"
+    },
+    {
+      "parameters": {"assignments": {"assignments": [
+        {"id":"event","name":"event","value":"={{ $json.body.event || 'recommendations_generated' }}","type":"string"},
+        {"id":"city","name":"city","value":"={{ $json.body.city || 'Unknown city' }}","type":"string"},
+        {"id":"places","name":"top_places","value":"={{ $json.body.top_places || [] }}","type":"array"},
+        {"id":"mode","name":"data_mode","value":"={{ $json.body.data_mode || 'unknown' }}","type":"string"}
+      ]}, "options": {}},
+      "id": "normalize-event",
+      "name": "Normalize event",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [500, 300]
+    }
+  ],
+  "connections": {"TripWise Webhook": {"main": [[{"node": "Normalize event", "type": "main", "index": 0}]]}},
+  "active": false,
+  "settings": {"executionOrder": "v1"},
+  "versionId": "example-only",
+  "meta": {"templateCredsSetupCompleted": true},
+  "tags": []
+}
